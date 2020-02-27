@@ -1,0 +1,15 @@
+.vue-switcher div{
+    margin-left: 15px;
+}
+
+.vue-switcher.dark span{
+    color: $textLight !important;
+}
+
+.vue-switcher.light span{
+    color: $textDark !important;
+}
+
+.weather-img-bg-container img{
+    width: 100%;
+}
