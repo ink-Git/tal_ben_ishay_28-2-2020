@@ -1,78 +1,125 @@
 <template>
-  <div class="home">
+  <div><!--root div-->
     <Nav />
 
-    <div class="days-grid-container">
+    <div class="days-grid-container mt-4">
       <div class="day-container">
-        <div>
-          {{locationInfo.LocalizedName}}
-          <div>{{currentTodayWather}}</div>
+        <div class="day-hader">
+          <div class="choose-temp-units">
+            <switches
+              v-model="enabled"
+              theme="bootstrap"
+              color="info"
+              :label="labelText"
+              :class="currentActiveTheme"
+            >
+          </switches>
+          </div>
+          <div class="add-to-favorits">favorits</div>
+        </div>
+
+        <div class="day-body-container">
+            <div class="day-body-left">
+              <div class="day-body-left-loction-container">
+                   <div class="day-body-left-title">{{locationInfo.LocalizedName}}</div>
+                   <div class="day-body-left-sub-title">{{locationInfo.Country.LocalizedName}}</div>
+                </div>
+              <div class="day-body-left-temp-info">
+                  <div>{{currentTodayWather.Temperature.Metric.Value}} </div>
+                  <div> {{currentTodayWather.Temperature.Metric.Unit}}</div>
+                </div>
+
+              
+              
+
+              </div>
+            <div class="day-body-right">{{currentTodayWather}}</div>
         </div>
       </div>
 
-      <div class="five-days-container">
-        <div v-for="(wather, index) in watherFiveDays.DailyForecasts" :key="index">
-          {{wather}}
-        </div>
+      <div class="five-days-container mt-4">
+       <b-card-group deck>
+       <b-col md="2" v-for="(wather, index) in watherFiveDays.DailyForecasts" :key="index">
+       <b-card bg-variant="light" header="light" text-variant="dark" class="text-center">
+        <b-card-text>{{wather}}</b-card-text>
+      </b-card>
+       </b-col>
+       </b-card-group>
       </div>
     </div>
   </div>
+  <!--end root div-->
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from "vue-property-decorator";
-import { apiService } from "../core/ApiService";
-import { Interfaces } from "../core/Interfaces";
-import Nav from "@/layout/Nav.vue";
+  import {
+    Component,Vue} from "vue-property-decorator";
+  import {apiService} from "../core/ApiService";
+  import {Interfaces} from "../core/Interfaces";
+  import Nav from "@/layout/Nav.vue";
+  import Switches from "vue-switches";
+  @Component({
+    components: {
+      Nav,
+      Switches
+    }
+  })
+  export default class Home extends Vue {
+    enabled = true;
+    labelText = 'Temperature unit: C'
+    apiKey: string = "830TB6h2IUSKg9YVJHsDA7ABDyv7G2rK";
+    locationSearchText: string = "";
+    defaultLocationName: string = "tel aviv";
 
-@Component({
-  components: {
-    Nav
-  }
-})
-export default class Home extends Vue {
-  apiKey: string = "830TB6h2IUSKg9YVJHsDA7ABDyv7G2rK";
-  locationSearchText: string = "";
-  defaultLocationName: string = "tel aviv";
-  locationInfo: Interfaces.ILocationInfo = {
-    Version: 0,
-    Key: "",
-    Type: "",
-    Rank: 0,
-    LocalizedName: "",
-    Country: { ID: "", LocalizedName: "" }
-  };
+    locationInfo: Interfaces.ILocationInfo = {
+      Version: 0,
+      Key: "",
+      Type: "",
+      Rank: 0,
+      LocalizedName: "",
+      Country: {
+        ID: "",
+        LocalizedName: ""
+      }
+    };
 
-  currentTodayWather: Interfaces.IWeather = {
-    LocalObservationDateTime: "",
-    EpochTime: 0,
-    WeatherText: "",
-    WeatherIcon: 0,
-    HasPrecipitation: false,
-    PrecipitationType: "",
-    IsDayTime: false,
-    Temperature: {
-      Metric: { Value: 0, Unit: "", UnitType: 0 },
-      Imperial: { Value: 0, Unit: "", UnitType: 0 }
-    },
-    MobileLink: "",
-    Link: ""
-  };
-
-  watherFiveDays: Interfaces.ICurrentWeatherFiveDayes = {
-    Headline: {
-      EffectiveDate: "",
-      EffectiveEpochDate: 0,
-      Severity: 0,
-      Text: "",
-      Category: "",
-      EndDate: "",
-      EndEpochDate: 0,
+    currentTodayWather: Interfaces.IWeather = {
+      LocalObservationDateTime: "",
+      EpochTime: 0,
+      WeatherText: "",
+      WeatherIcon: 0,
+      HasPrecipitation: false,
+      PrecipitationType: "",
+      IsDayTime: false,
+      Temperature: {
+        Metric: {
+          Value: 0,
+          Unit: "",
+          UnitType: 0
+        },
+        Imperial: {
+          Value: 0,
+          Unit: "",
+          UnitType: 0
+        }
+      },
       MobileLink: "",
       Link: ""
-    },
-    DailyForecasts: [
-      {
+    };
+
+    watherFiveDays: Interfaces.ICurrentWeatherFiveDayes = {
+      Headline: {
+        EffectiveDate: "",
+        EffectiveEpochDate: 0,
+        Severity: 0,
+        Text: "",
+        Category: "",
+        EndDate: "",
+        EndEpochDate: 0,
+        MobileLink: "",
+        Link: ""
+      },
+      DailyForecasts: [{
         Date: "",
         EpochDate: 0,
         Temperature: {
@@ -100,50 +147,49 @@ export default class Home extends Vue {
         Sources: [""],
         MobileLink: "",
         Link: ""
-      }
-    ]
-  };
+      }]
+    };
 
-  created() {
-    this.onGetLocationKey();
+    created() {
+       this.onGetLocationKey();
+    }
+
+    onGetLocationKey() {
+      apiService
+        .get(
+          `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${this.apiKey}&q=${this.defaultLocationName}&language=en-us`
+        )
+        .then(res => {
+          this.locationInfo = res[0];
+          this.onGetCurrentLocationTodayForecast();
+        })
+        .catch(err => {});
+    }
+
+    onGetCurrentLocationTodayForecast() {
+      apiService
+        .get(
+          `http://dataservice.accuweather.com/currentconditions/v1/${this.locationInfo.Key}?apikey=${this.apiKey}`
+        )
+        .then(res => {
+          this.currentTodayWather = res[0];
+          this.onGetCurrentLocationFiveDaysForecast();
+        })
+        .catch(err => {});
+    }
+
+    onGetCurrentLocationFiveDaysForecast() {
+      apiService
+        .get(
+          `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${this.locationInfo.Key}?apikey=${this.apiKey}`
+        )
+        .then(res => {
+          this.watherFiveDays = res;
+          console.log(this.watherFiveDays);
+        })
+        .catch(err => {});
+    }
   }
 
-  onGetLocationKey() {
-    apiService
-      .get(
-        `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${this.apiKey}&q=${this.defaultLocationName}&language=en-us`
-      )
-      .then(res => {
-        this.locationInfo = res[0];
-        this.onGetCurrentLocationTodayForecast();
-      })
-      .catch(err => {});
-  }
-
-  onGetCurrentLocationTodayForecast() {
-    apiService
-      .get(
-        `http://dataservice.accuweather.com/currentconditions/v1/${this.locationInfo.Key}?apikey=${this.apiKey}`
-      )
-      .then(res => {
-        this.currentTodayWather = res[0];
-        this.onGetCurrentLocationFiveDaysForecast();
-      })
-      .catch(err => {});
-  }
-
-  onGetCurrentLocationFiveDaysForecast() {
-    apiService
-      .get(
-        `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${this.locationInfo.Key}?apikey=${this.apiKey}`
-      )
-      .then(res => {
-        this.watherFiveDays = res;
-        console.log(this.watherFiveDays);
-      })
-      .catch(err => {});
-  }
-}
-
-// @ is an alias to /src
+  // @ is an alias to /src
 </script>

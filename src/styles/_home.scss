@@ -1,21 +1,65 @@
 .days-grid-container{
+    width: 90%;
+    margin: auto;
+}
+
+.day-hader{
+    background-color: #f0f1f2;
+    height: 50px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.choose-temp-units{
+    display: inline-block;
+    width: 50%;
+    padding-left: 10px;
+}
+
+
+.add-to-favorits{
+    display: inline-block;
+    width: 50%;
+    text-align: right;
+}
+
+.day-body-container{
     display: flex;
-    height: 100vh;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-top: none;
+    height: 300px;
+    background-color: #f8f9fa;
 }
 
-.day-container{
-    width: 30%;
-    background-color: red;
+.day-body-left{
+    width: 50%;
+    border-right: 1px solid rgba(0, 0, 0, 0.125);
+    display: inline-flex;
+}
+.day-body-left-loction-container{
+    display: inline-block;
+    width: 50%;
+    height: 100%;
+    border-right:  1px solid rgba(0, 0, 0, 0.125);
+}
+.day-body-left-title{
+    font-size: 4em;   
 }
 
-.serch-city-container {
-    // margin-top: 20px;
+.day-body-left-temp-info{
+    display: inline-block;
+    font-size: 3em;
+    width: 50%;
+}
+.day-body-left-sub-title{
+    font-size: 1.5em;
 }
 
-.five-days-container{
-    width: 70%;
-    background-color: rosybrown;
-    
-    
-    
+.day-body-right{
+    width: 50%;
+}
+
+.five-days-container .card-deck{
+    justify-content: center;
 }

@@ -12,7 +12,6 @@ export default new Vuex.Store({
   },
   mutations: {
     upadteCurrentActiveTheme(state, data) {
-      debugger;
       state.currentActiveTheme = data;
     }
   },
