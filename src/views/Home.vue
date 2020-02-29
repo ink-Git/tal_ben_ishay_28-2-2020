@@ -1,11 +1,24 @@
 <template>
   <div><!--root div-->
     <Nav />
-      <div class="today-container mt-4">
+
+
+      <div class="today-container">
         <div class="today-hader">
           <div class="choose-unit-type-container">
             unit
           </div>
+
+          <div class="serch-container mt-1">
+            <b-form >
+            <b-input-group>
+            <b-input-group-prepend is-text><b-icon-search></b-icon-search></b-input-group-prepend>
+            <b-input id="inline-form-input-username" placeholder="Username"></b-input>
+            </b-input-group>
+            </b-form>
+          </div>
+
+
           <div class="favorites-continer">favorites</div>
         </div>
         <div class="today-info-container">
@@ -17,7 +30,7 @@
             <!-- {{currentTodayWather.IsDayTime}} -->
             <div class="temp-info-container mt-4">
               <div class="temp-info-icon">icon</div>
-              <div class="temp-info">
+              <div class="temp-info ml-3">
                 {{currentTodayWather.Temperature.Metric.Value}}13.8 C {{currentTodayWather.Temperature.Metric.Unit}}
                 </div>    
             </div>
@@ -29,7 +42,7 @@
 
           </div>
 
-          <div class="today-image"><img src="../assets/images/tree_bg.gif"></div>
+          <div class="today-image"><img src="../assets/images/inf_pic.gif"></div>
         </div>      
       </div>
 
@@ -42,6 +55,7 @@
        </b-col>
        </b-card-group>
       </div> -->
+      
     </div><!--end root div-->
 </template>
 
