@@ -1,43 +1,39 @@
 <template>
   <div><!--root div-->
     <Nav />
-
-    <div class="days-grid-container mt-4">
-      <div class="day-container">
-        <div class="day-hader">
-          <div class="choose-temp-units">
-            <switches
-              v-model="enabled"
-              theme="bootstrap"
-              color="info"
-              :label="labelText"
-              :class="currentActiveTheme"
-            >
-          </switches>
+      <div class="today-container mt-4">
+        <div class="today-hader">
+          <div class="choose-unit-type-container">
+            unit
           </div>
-          <div class="add-to-favorits">favorits</div>
+          <div class="favorites-continer">favorites</div>
         </div>
+        <div class="today-info-container">
+          <div class="today-info ml-3">
+            <div class="today-info-title">{{locationInfo.LocalizedName}} Tel Aviv</div>
+            <div class="today-info-sub-title">{{locationInfo.Country.LocalizedName}} Israel</div>
+            <div class="clouds-status">{{currentTodayWather.WeatherText}} Mostly clear</div>
+            <!-- {{currentTodayWather.WeatherIcon}} -->
+            <!-- {{currentTodayWather.IsDayTime}} -->
+            <div class="temp-info-container mt-4">
+              <div class="temp-info-icon">icon</div>
+              <div class="temp-info">
+                {{currentTodayWather.Temperature.Metric.Value}}13.8 C {{currentTodayWather.Temperature.Metric.Unit}}
+                </div>    
+            </div>
+            
+            
 
-        <div class="day-body-container">
-            <div class="day-body-left">
-              <div class="day-body-left-loction-container">
-                   <div class="day-body-left-title">{{locationInfo.LocalizedName}}</div>
-                   <div class="day-body-left-sub-title">{{locationInfo.Country.LocalizedName}}</div>
-                </div>
-              <div class="day-body-left-temp-info">
-                  <div>{{currentTodayWather.Temperature.Metric.Value}} </div>
-                  <div> {{currentTodayWather.Temperature.Metric.Unit}}</div>
-                </div>
+            <!-- {{currentTodayWather.Temperature.Imperial.Value}}
+            {{currentTodayWather.Temperature.Imperial.Unit}} -->
 
-              
-              
+          </div>
 
-              </div>
-            <div class="day-body-right">{{currentTodayWather}}</div>
-        </div>
+          <div class="today-image"><img src="../assets/images/tree_bg.gif"></div>
+        </div>      
       </div>
 
-      <div class="five-days-container mt-4">
+      <!-- <div class="five-days-container mt-4">
        <b-card-group deck>
        <b-col md="2" v-for="(wather, index) in watherFiveDays.DailyForecasts" :key="index">
        <b-card bg-variant="light" header="light" text-variant="dark" class="text-center">
@@ -45,19 +41,17 @@
       </b-card>
        </b-col>
        </b-card-group>
-      </div>
-    </div>
-  </div>
-  <!--end root div-->
+      </div> -->
+    </div><!--end root div-->
 </template>
 
 <script lang='ts'>
-  import {
-    Component,Vue} from "vue-property-decorator";
+  import {Component,Vue} from "vue-property-decorator";
   import {apiService} from "../core/ApiService";
   import {Interfaces} from "../core/Interfaces";
   import Nav from "@/layout/Nav.vue";
   import Switches from "vue-switches";
+
   @Component({
     components: {
       Nav,
@@ -151,7 +145,7 @@
     };
 
     created() {
-       this.onGetLocationKey();
+        // this.onGetLocationKey();
     }
 
     onGetLocationKey() {

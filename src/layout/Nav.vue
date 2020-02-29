@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <b-navbar
       toggleable="lg"
       :type="currentActiveTheme"
@@ -30,7 +29,7 @@
       </b-collapse>
     </b-navbar>
     <div class="weather-img-bg-container">
-      <img src="../assets/images/weather_bg.jpg">
+      <!-- <img src="../assets/images/banner.jpg"> -->
     </div>
 
   </div>

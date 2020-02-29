@@ -1,63 +1,66 @@
-.days-grid-container{
-    width: 90%;
+.today-container{
+    width: 60%;
+    background-color: #f8f9fa;
     margin: auto;
-}
-
-.day-hader{
-    background-color: #f0f1f2;
-    height: 50px;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
     border: 1px solid rgba(0, 0, 0, 0.125);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 }
 
-.choose-temp-units{
+.today-hader{
+    background-color: #f0f1f2;
+    height: 50px;    
+}
+
+.choose-unit-type-container{
     display: inline-block;
     width: 50%;
-    padding-left: 10px;
 }
 
-
-.add-to-favorits{
+.favorites-continer{
     display: inline-block;
     width: 50%;
     text-align: right;
 }
 
-.day-body-container{
+.today-info-container{
     display: flex;
-    border: 1px solid rgba(0, 0, 0, 0.125);
-    border-top: none;
-    height: 300px;
-    background-color: #f8f9fa;
 }
 
-.day-body-left{
+
+.today-info{
+    display: inline-block;
     width: 50%;
     border-right: 1px solid rgba(0, 0, 0, 0.125);
-    display: inline-flex;
-}
-.day-body-left-loction-container{
-    display: inline-block;
-    width: 50%;
-    height: 100%;
-    border-right:  1px solid rgba(0, 0, 0, 0.125);
-}
-.day-body-left-title{
-    font-size: 4em;   
 }
 
-.day-body-left-temp-info{
-    display: inline-block;
-    font-size: 3em;
-    width: 50%;
-}
-.day-body-left-sub-title{
-    font-size: 1.5em;
+.today-info-title{
+    font-size: 2em;
 }
 
-.day-body-right{
+.today-info-sub-title{
+    font-size: 1em;
+}
+
+.temp-info-icon{
+    display: inline-block;
+}
+
+
+.temp-info{
+    display: inline-block;
+    font-size: 2.5em;
+    background-color: red;
+}
+
+
+.today-image{
+    display: inline-block;
     width: 50%;
+}
+
+.today-image img{
+    width: 100%;
 }
 
 .five-days-container .card-deck{
