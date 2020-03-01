@@ -1,12 +1,16 @@
 <template>
   <div><!--root div-->
     <Nav />
-
-
       <div class="today-container">
-        <div class="today-hader">
+        <div :class="currentActiveTheme == 'light' ? 'today-hader-light' : 'today-hader-dark'">
           <div class="choose-unit-type-container">
-            unit
+            <switches 
+             v-model="enabled" 
+             :label="tempUnitsLabelText" theme="bootstrap"
+             color="info"
+             :class="currentActiveTheme"
+             > 
+            </switches>
           </div>
 
           <div class="serch-container mt-1">
@@ -18,63 +22,72 @@
             </b-form>
           </div>
 
-
           <div class="favorites-continer">favorites</div>
         </div>
+
         <div class="today-info-container">
-          <div class="today-info ml-3">
-            <div class="today-info-title">{{locationInfo.LocalizedName}} Tel Aviv</div>
-            <div class="today-info-sub-title">{{locationInfo.Country.LocalizedName}} Israel</div>
-            <div class="clouds-status">{{currentTodayWather.WeatherText}} Mostly clear</div>
-            <!-- {{currentTodayWather.WeatherIcon}} -->
-            <!-- {{currentTodayWather.IsDayTime}} -->
+          <div class="today-info">
+            <div class="today-info-title mt-3 ml-2">{{locationInfo.LocalizedName}}</div>
+            <div class="today-info-sub-title ml-2">{{locationInfo.Country.LocalizedName}}</div>
+            <div class="clouds-status ml-2">{{currentTodayWather.WeatherText}}</div>
+
             <div class="temp-info-container mt-4">
-              <div class="temp-info-icon">icon</div>
+              <div class="temp-info-icon ml-2">{{currentTodayWather.WeatherIcon}}icon</div>
               <div class="temp-info ml-3">
-                {{currentTodayWather.Temperature.Metric.Value}}13.8 C {{currentTodayWather.Temperature.Metric.Unit}}
-                </div>    
+                {{Math.round(currentTodayWather.Temperature.Metric.Value)}} {{currentTodayWather.Temperature.Metric.Unit}}
+              </div>    
             </div>
-            
-            
-
-            <!-- {{currentTodayWather.Temperature.Imperial.Value}}
-            {{currentTodayWather.Temperature.Imperial.Unit}} -->
-
           </div>
 
           <div class="today-image"><img src="../assets/images/inf_pic.gif"></div>
-        </div>      
-      </div>
+        </div>     
+        <div class="five-dayes-wather-container">
+             
+              <div class="card-container" v-for="(wather, index) in watherFiveDays.DailyForecasts" :key="index">
+                <div class="card-icon mt-2">
+                  <img :src="dayOrNightImgSrc">
+                  <div class="card-date my-2">{{wather.Date}}</div>
+                  </div>
+                                  
+                <div class="morning-info-container">
+                  <div class="morning-info-container-icon mr-2">{{wather.Day.Icon}}</div>
+                  <div class="morning-info-cloud-status mt-4">{{wather.Day.IconPhrase}}</div>
+                </div>
+                
+                <div class="night-info-container my-4">
+                  <div class="night-info-container-icon mr-2">{{wather.Night.Icon}}</div>
+                  <div class="night-info-cloud-status">{{wather.Night.IconPhrase}}</div>
+                </div>
 
-      <!-- <div class="five-days-container mt-4">
-       <b-card-group deck>
-       <b-col md="2" v-for="(wather, index) in watherFiveDays.DailyForecasts" :key="index">
-       <b-card bg-variant="light" header="light" text-variant="dark" class="text-center">
-        <b-card-text>{{wather}}</b-card-text>
-      </b-card>
-       </b-col>
-       </b-card-group>
-      </div> -->
+                <div class="all-day-min-max-tamp-container">
+                  <div class="all-day-min-max-tamp-container-icon mt-3"><img src="../assets/images/temp_icon.png"></div>
+                  <div class="all-day-min--max-tamp my-3"> min {{wather.Temperature.Minimum.Value}}  {{wather.Temperature.Minimum.Unit}} | max {{wather.Temperature.Maximum.Value}}  {{wather.Temperature.Minimum.Unit}} </div>
+                </div>
+              </div>
+            </div> 
+      </div>
       
-    </div><!--end root div-->
+  </div><!--end root div-->
 </template>
 
 <script lang='ts'>
   import {Component,Vue} from "vue-property-decorator";
   import {apiService} from "../core/ApiService";
   import {Interfaces} from "../core/Interfaces";
+  import store from "@/store";
   import Nav from "@/layout/Nav.vue";
   import Switches from "vue-switches";
-
+  
   @Component({
     components: {
       Nav,
       Switches
     }
   })
+
   export default class Home extends Vue {
     enabled = true;
-    labelText = 'Temperature unit: C'
+    tempUnitsLabelText = 'Temperature unit: C'
     apiKey: string = "830TB6h2IUSKg9YVJHsDA7ABDyv7G2rK";
     locationSearchText: string = "";
     defaultLocationName: string = "tel aviv";
@@ -197,6 +210,18 @@
         })
         .catch(err => {});
     }
+
+    get currentActiveTheme() {
+      return store.getters.currentActiveTheme;
+  }
+
+  get dayOrNightImgSrc(){
+    if(!this.currentTodayWather.IsDayTime){
+      return require('../assets/images/night_icon.png')
+    }else{
+      return require('../assets/images/day_icon.png')
+    }
+  }
   }
 
   // @ is an alias to /src

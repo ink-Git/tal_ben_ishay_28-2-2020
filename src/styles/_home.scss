@@ -13,12 +13,18 @@
     border: 1px solid #f0f1f2;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
-    margin-top: 8rem !important;
+    margin-top: 2rem !important;
+    
 }
 
-.today-hader{
-    background-color: #f0f1f2;
-    height: 50px;    
+.today-hader-light{
+    background-color: #f0f1f2;    
+    display: flex;
+}
+
+.today-hader-dark{
+    display: flex;
+    background-color: #343a40;    
 }
 
 .choose-unit-type-container{
@@ -50,13 +56,18 @@
 .today-info{
     display: inline-block;
     width: 50%;
-    border-right: 1px solid #f0f1f2;
+    // border-right: 1px solid #f0f1f2;
     color: #ffffff;
-    
+    background-image: url('../assets/images/inf_temp_bg.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;   
+    border-right:1px solid #7d90a3 ;
 }
 
 .today-info-title{
-    font-size: 2em;
+    font-size: 1.8em;
 }
 
 .today-info-sub-title{
@@ -65,12 +76,15 @@
 
 .temp-info-icon{
     display: inline-block;
+    
+    
 }
 
 
 .temp-info{
     display: inline-block;
-    font-size: 2.5em;
+    font-size: 4em;
+    
 }
 
 
@@ -83,6 +97,62 @@
     width: 100%;
 }
 
-.five-days-container .card-deck{
-    justify-content: center;
+// .five-dayes-wather-container{
+//    display: flex;
+// }
+
+.five-dayes-wather-container{
+    background-color: #33495f;
+    display: flex;
+    border-top:1px solid #f0f1f2 ;
+    // height: 250px;
+    color: #7d90a3;
+}
+
+.card-container{
+    border-right:1px solid #7d90a3 ;
+    width: 20%;
+    text-align: center;
+}
+
+.card-icon{
+    text-align: center;
+}
+
+.card-date{
+    text-align: center;
+}
+
+
+.morning-info-container-icon{
+    display: inline-block;
+    
+}
+
+.morning-info-cloud-status{
+    display: inline-block;
+}
+
+.night-info-container-icon{
+    display: inline-block;
+}
+
+.night-info-container-icon img{
+    width: 100%;
+}
+
+.night-info-cloud-status{
+    display: inline-block;
+}
+
+.all-day-min-max-tamp-container{
+    border-top: 1px solid #7d90a3;
+}
+
+.all-day-min-tamp{
+    display: inline-block;    
+}
+
+.all-day-max-tamp{
+    display: inline-block;
 }
