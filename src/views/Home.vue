@@ -3,6 +3,22 @@
     <Nav />
       <div class="today-container">
         <div :class="currentActiveTheme == 'light' ? 'today-hader-light' : 'today-hader-dark'">
+          <div class="favorites-continer">
+            
+            <b-button @click="addToFavorite()" squared  variant="outline-danger mt-2" :class="a" size="sm" >
+                <b-icon-heart ></b-icon-heart> 
+                {{likeBuText}}
+              </b-button>
+          </div>
+          
+          <div class="serch-container mt-1">
+            <b-form >
+            <b-input-group>
+            <b-input-group-prepend is-text><b-icon-search></b-icon-search></b-input-group-prepend>
+            <b-input  placeholder="Username"></b-input>
+            </b-input-group>
+            </b-form>
+          </div>
           <div class="choose-unit-type-container">
             <switches 
              v-model="enabled" 
@@ -12,17 +28,6 @@
              > 
             </switches>
           </div>
-
-          <div class="serch-container mt-1">
-            <b-form >
-            <b-input-group>
-            <b-input-group-prepend is-text><b-icon-search></b-icon-search></b-input-group-prepend>
-            <b-input id="inline-form-input-username" placeholder="Username"></b-input>
-            </b-input-group>
-            </b-form>
-          </div>
-
-          <div class="favorites-continer">favorites</div>
         </div>
 
         <div class="today-info-container">
@@ -66,7 +71,7 @@
               </div>
             </div> 
       </div>
-      
+     
   </div><!--end root div-->
 </template>
 
@@ -90,7 +95,16 @@
     tempUnitsLabelText = 'Temperature unit: C'
     apiKey: string = "830TB6h2IUSKg9YVJHsDA7ABDyv7G2rK";
     locationSearchText: string = "";
-    defaultLocationName: string = "tel aviv";
+    defaultLocationName: string = "";
+    likeBuText = "Add to favorite";
+    a = "";
+    
+    options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+    
+  };
 
     locationInfo: Interfaces.ILocationInfo = {
       Version: 0,
@@ -172,9 +186,21 @@
     };
 
     created() {
-        // this.onGetLocationKey();
+      // navigator.geolocation.getCurrentPosition(this.success, this.error, this.options);
     }
 
+    onGetDefaultLoction(Latitude:string,Longitude:string){
+      apiService
+        .get(
+          `http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${this.apiKey}&q=${Latitude},${Longitude}`
+        )
+        .then(res => {
+          this.defaultLocationName = res.LocalizedName;
+          this.onGetLocationKey();
+        })
+        .catch(err => {});
+    }
+    
     onGetLocationKey() {
       apiService
         .get(
@@ -206,7 +232,6 @@
         )
         .then(res => {
           this.watherFiveDays = res;
-          console.log(this.watherFiveDays);
         })
         .catch(err => {});
     }
@@ -222,7 +247,27 @@
       return require('../assets/images/day_icon.png')
     }
   }
+
+  success(pos:any) {
+  var crd = pos.coords;
+  let Latitude = `${crd.latitude}`;
+  let Longitude = `${crd.longitude}`;
+  this.onGetDefaultLoction(Latitude,Longitude);
+  return;
   }
+
+ error(err:any) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+  }
+
+  addToFavorite(){    
+    store.state.favoriteWatherCity.push(this.locationInfo);
+    store.state.favoriteWather.push(this.currentTodayWather);
+    console.log(store.getters.favoriteWather);
+    console.log( store.getters.favoriteWatherCity);
+}
+
+}
 
   // @ is an alias to /src
 </script>
