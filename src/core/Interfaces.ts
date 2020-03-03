@@ -7,6 +7,7 @@ export namespace Interfaces {
         Rank: number;
         LocalizedName: string;
         Country: ICountry;
+        favorite: boolean;
     }
 
     export interface ICountry {

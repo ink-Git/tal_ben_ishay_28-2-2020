@@ -5,7 +5,7 @@
         <div :class="currentActiveTheme == 'light' ? 'today-hader-light' : 'today-hader-dark'">
           <div class="favorites-continer">
             
-            <b-button @click="addToFavorite()" squared  variant="outline-danger mt-2" :class="a" size="sm" >
+            <b-button @click="addToFavorite()" squared  variant="outline-danger mt-2" :class="checkIfFavorite" size="sm" >
                 <b-icon-heart ></b-icon-heart> 
                 {{likeBuText}}
               </b-button>
@@ -97,8 +97,8 @@
     locationSearchText: string = "";
     defaultLocationName: string = "";
     likeBuText = "Add to favorite";
-    a = "";
-    
+    isActive = '';
+
     options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -115,7 +115,8 @@
       Country: {
         ID: "",
         LocalizedName: ""
-      }
+      },
+      favorite: false
     };
 
     currentTodayWather: Interfaces.IWeather = {
@@ -187,6 +188,7 @@
 
     created() {
       // navigator.geolocation.getCurrentPosition(this.success, this.error, this.options);
+      
     }
 
     onGetDefaultLoction(Latitude:string,Longitude:string){
@@ -260,11 +262,19 @@
   console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
+   get checkIfFavorite(){
+    console.log(store.getters.favoriteWatherCity[1].favorite);
+     if(store.getters.favoriteWatherCity[1].favorite){
+      return 'active'; 
+     }else return ''
+  }
+
   addToFavorite(){    
+    this.locationInfo.favorite = true;
     store.state.favoriteWatherCity.push(this.locationInfo);
     store.state.favoriteWather.push(this.currentTodayWather);
-    console.log(store.getters.favoriteWather);
-    console.log( store.getters.favoriteWatherCity);
+    // console.log(store.getters.favoriteWather);
+    // console.log( store.getters.favoriteWatherCity);
 }
 
 }
