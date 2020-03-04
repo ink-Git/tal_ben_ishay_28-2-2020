@@ -105,6 +105,10 @@
     display: inline-block;
 }
 
+.temp-info-icon img{
+    height: 70px;
+}
+
 
 .temp-info{
     display: inline-block;
@@ -148,22 +152,43 @@
     text-align: center;
 }
 
+.morning-info-container{
+    text-align: left;
+}
 
 .morning-info-container-icon{
     display: inline-block;
-    
+}
+
+.morning-info-container-icon img{
+    height: 40px;
+    width: 100%;
 }
 
 .morning-info-cloud-status{
     display: inline-block;
+    width: 50%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; 
+    text-align: left;
+
+
+}
+
+.night-info-container{
+    text-align: left;
 }
 
 .night-info-container-icon{
     display: inline-block;
+    
 }
+
 
 .night-info-container-icon img{
     width: 100%;
+    height: 40px;
 }
 
 .night-info-cloud-status{

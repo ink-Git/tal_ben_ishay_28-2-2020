@@ -11,7 +11,6 @@
             variant="danger mt-2"
             size="sm"
             :disabled="isLocationFavorite"
-            
           >
             <b-icon-heart></b-icon-heart>
             {{favoritesBuText}}
@@ -27,18 +26,23 @@
               <b-input
                 v-model="locationSearchText"
                 @input="onSearchLoction()"
+                @keypress="onValidateAzInput"
                 placeholder="Find City"
               ></b-input>
             </b-input-group>
             <ul :style="displayList ? 'display:block; ' : 'display:none;'">
-                <li @click="onSelectCity(locationInfo)" v-for="(locationInfo, index) in locationSearchResults" :key="index" >{{locationInfo.LocalizedName}}</li>
+              <li
+                @click="onSelectCity(locationInfo)"
+                v-for="(locationInfo, index) in locationSearchResults"
+                :key="index"
+              >{{locationInfo.LocalizedName}}</li>
             </ul>
-            
           </b-form>
         </div>
         <div class="choose-unit-type-container">
           <switches
-            v-model="enabled"
+            v-model="isMetric"
+            @change.native="onChangeMessureUnits"
             :label="tempUnitsLabelText"
             theme="bootstrap"
             color="info"
@@ -58,8 +62,13 @@
               <img :src="getIcon(currentTodayWather.WeatherIcon)" />
             </div>
             <div
-              class="temp-info ml-3"
+              v-if="isMetric"
+              class="temp-info"
             >{{Math.round(currentTodayWather.Temperature.Metric.Value)}} {{currentTodayWather.Temperature.Metric.Unit}}</div>
+            <div
+              v-else
+              class="temp-info ml-3"
+            >{{Math.round(currentTodayWather.Temperature.Imperial.Value)}} {{currentTodayWather.Temperature.Imperial.Unit}}</div>
           </div>
         </div>
 
@@ -98,7 +107,7 @@
             </div>
             <div
               class="all-day-min--max-tamp my-3"
-            >min {{wather.Temperature.Minimum.Value}} {{wather.Temperature.Minimum.Unit}} | max {{wather.Temperature.Maximum.Value}} {{wather.Temperature.Minimum.Unit}}</div>
+            >min {{Math.round(wather.Temperature.Minimum.Value)}} {{wather.Temperature.Minimum.Unit}} | max {{Math.round(wather.Temperature.Maximum.Value)}} {{wather.Temperature.Minimum.Unit}}</div>
           </div>
         </div>
       </div>
@@ -113,8 +122,7 @@ import { apiService } from "../core/ApiService";
 import { Interfaces } from "../core/Interfaces";
 import store from "@/store";
 import Nav from "@/layout/Nav.vue";
-import Switches from "vue-switches";
-
+import Switches from "vue-switches/src/switches.vue";
 
 @Component({
   components: {
@@ -123,16 +131,15 @@ import Switches from "vue-switches";
   }
 })
 export default class Home extends Vue {
-  enabled: boolean = true;
+  isMetric: boolean = true;
   tempUnitsLabelText: string = "Temperature unit: C";
-  apiKey: string = "830TB6h2IUSKg9YVJHsDA7ABDyv7G2rK";
+  apiKey: string = "ZlZQsSATNgvtu6FSC2MRjxzeCI1i3Iso";
   locationSearchText: string = "";
   defaultLocationName: string = "";
-  favoritesBuText: string = "Add to favorite";
   isActive: boolean = false;
   locationSearchResults: Array<any> = new Array<any>();
-  displayList:boolean = false;
-  
+  displayList: boolean = false;
+
   options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -221,7 +228,7 @@ export default class Home extends Vue {
   };
 
   created() {
-    navigator.geolocation.getCurrentPosition(this.success, this.error, this.options);
+    // navigator.geolocation.getCurrentPosition(this.success,this.error,this.options);
   }
 
   onGetDefaultLoction(Latitude: string, Longitude: string) {
@@ -279,12 +286,23 @@ export default class Home extends Vue {
   onGetCurrentLocationFiveDaysForecast() {
     apiService
       .get(
-        `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${this.locationInfo.Key}?apikey=${this.apiKey}`
+        `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${this.locationInfo.Key}?apikey=${this.apiKey}&metric=${this.isMetric}`
       )
       .then(res => {
         this.watherFiveDays = res;
       })
       .catch(err => {});
+  }
+
+  onChangeMessureUnits() {
+    this.onGetCurrentLocationFiveDaysForecast();
+  }
+
+  onValidateAzInput(e) {
+    let numRegex = new RegExp(/^[a-zA-Z]*$/);
+    if (!numRegex.test(e.key)) {
+      e.preventDefault();
+    }
   }
 
   onSelectCity(locationInfo: Interfaces.ILocationInfo) {
@@ -350,11 +368,10 @@ export default class Home extends Vue {
       this.favoriteWather.push(this.currentTodayWather);
       this.makeToastFavoriteAdded();
     } else {
-      this.isLocationFavorite
-        
-      
+      this.isLocationFavorite;
+
       this.makeToastFavoriteMoreThen5();
-    };
+    }
   }
 
   get isLocationFavorite() {
@@ -362,11 +379,14 @@ export default class Home extends Vue {
       s => s.Key == this.locationInfo.Key
     );
     if (favorite) {
-      this.favoritesBuText = "In Favorites";
       return true;
     } else {
       return false;
     }
+  }
+
+  get favoritesBuText() {
+    return this.isLocationFavorite ? "In Favorites" : "Add to Favorites";
   }
 
   makeToastFavoriteAdded(variant = null) {
@@ -378,7 +398,7 @@ export default class Home extends Vue {
     );
   }
 
-   makeToastFavoriteMoreThen5(variant = null) {
+  makeToastFavoriteMoreThen5(variant = null) {
     this.$bvToast.toast(
       `cant added ${this.locationInfo.LocalizedName} to favorites`,
       {
