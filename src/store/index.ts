@@ -6,8 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     currentActiveTheme: 'light',
-    favoriteWatherCity : [{}],
-    favoriteWather : [{}],
+    favoriteWatherCity : new Array<any>(),
+    favoriteWather : new Array<any>(),
   },
 
   mutations: {

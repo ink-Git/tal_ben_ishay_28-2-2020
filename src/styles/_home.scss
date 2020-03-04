@@ -39,8 +39,34 @@
     text-align: center;
     width: 50%;
     display: inline-block;
+    
+    position: relative;
 }
 
+.serch-container ul{
+    text-align: left;
+    list-style: none;
+    background-color: #e9ecef;
+    position: absolute;
+    width: 100%;
+    padding: 0px;
+}
+
+.serch-container li{
+    border-bottom: 1px solid #c9c9c9;
+    padding: 0 0 10px 5px;
+    height: 40px;
+    line-height: 40px;
+}
+
+.serch-container li:hover{
+    cursor: pointer;
+    background-color: #c9c9c9;
+}
+
+.serch-container li:last-child{
+    border: none;
+}
 .favorites-continer{
     display: inline-block;
     width: 25%;
@@ -77,8 +103,6 @@
 
 .temp-info-icon{
     display: inline-block;
-    
-    
 }
 
 
