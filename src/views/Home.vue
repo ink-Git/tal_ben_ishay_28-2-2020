@@ -228,7 +228,7 @@ export default class Home extends Vue {
   };
 
   created() {
-    // navigator.geolocation.getCurrentPosition(this.success,this.error,this.options);
+    navigator.geolocation.getCurrentPosition(this.success,this.error,this.options);
   }
 
   onGetDefaultLoction(Latitude: string, Longitude: string) {

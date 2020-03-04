@@ -3,14 +3,19 @@
     <!--root div-->
     <Nav />
 
-    <div class="favorite-cards-continer">
+    <div class="favorite-cards-holder">
       <span v-for="(loctionInfo, index ) in favoriteCities" :key="index">
-        <div class="favorite-card-container mx-2">
+        <div class="favorite-card-container ml-3">
           <div class="favorite-card-hader">
-            <div class="favorite-card-hader-city-name">{{loctionInfo.LocalizedName}}</div>
+            <div class="favorite-card-hader-city-name">{{loctionInfo.LocalizedName}} - {{loctionInfo.Country.LocalizedName}}</div>
+            <div class="favorite-card-remove" @click="onRemoveFavorite(index)"><b-icon-x class="remove-icon"></b-icon-x></div>
           </div>
-          <div class="favorite-card-body">
-            <button @click="onRemoveFavorite(index)">remove me</button>
+          <div class="favorite-card-body" v-for="(favoriteWather, index ) in favoriteLoctionWather" :key="index">
+              <div class="favorite-clouds-icon mt-4"><img :src="getIcon(favoriteWather.WeatherIcon)" /></div>
+              <div class="favorite-temp-info mt-4">
+                <div class="favorite-temp">{{Math.round(favoriteWather.Temperature.Metric.Value)}} {{favoriteWather.Temperature.Metric.Unit}}</div>
+                <div class="favorite-clouds-info ">{{favoriteWather.WeatherText}}</div>
+              </div>
           </div>
         </div>
       </span>
@@ -50,6 +55,15 @@ export default class Favorites extends Vue {
   get favoriteLoctionWather() {
     return store.getters.favoriteWather as Array<any>;
   }
+
+  getIcon(weatherIcon: number) {
+    if (weatherIcon < 10) {
+      return `https://developer.accuweather.com/sites/default/files/0${weatherIcon}-s.png`;
+    } else {
+      return `https://developer.accuweather.com/sites/default/files/${weatherIcon}-s.png`;
+    }
+  }
+
 }
 
 // @ is an alias to /src

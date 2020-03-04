@@ -1,4 +1,4 @@
-.favorite-cards-continer{
+.favorite-cards-holder{
     text-align: center;
     
     
@@ -22,15 +22,53 @@
     background-color: #f0f1f2;
     height: 50px;
     display: flex;
-    justify-content: center;
     align-items: center
 }
 
 .favorite-card-hader-city-name{
-    width: 50%;
+    width: 88%;   
+    padding-left: 10px;
 }
 
-.favorite-card-hader-unit-type-switch{
-    width: 50%;
-    text-align: right;
+.favorite-card-remove{
+    width: 12%;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    background-color: #d8d8d8;
+
+}
+
+.favorite-card-remove:hover{
+    cursor: pointer;
+    background-color: #c82333;
+    color: #ffffff;
+}
+
+
+.remove-icon{
+    font-size: 1.2em;
+}
+
+.favorite-card-body{
+    display: flex;
+    align-items: center;
+}
+.favorite-clouds-icon{
+    display: inline-block;
+}
+
+.favorite-temp-info{
+    display: inline-block;
+}
+
+.favorite-temp{
+    color: #ffffff;
+    font-size: 2.4em;
+    
+}
+
+.favorite-clouds-info{
+    color: #ffffff;
+    font-size: 1em;
 }
