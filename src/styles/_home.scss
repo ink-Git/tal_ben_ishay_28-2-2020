@@ -193,6 +193,10 @@
 
 .night-info-cloud-status{
     display: inline-block;
+    width: 50%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; 
 }
 
 .all-day-min-max-tamp-container{

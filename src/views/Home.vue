@@ -84,7 +84,7 @@
         >
           <div class="card-icon mt-2">
             <img :src="dayOrNightImgSrc" />
-            <div class="card-date my-2">{{wather.Date}}</div>
+            <div class="card-date my-2">{{parseDate(wather.Date)}}</div>
           </div>
 
           <div class="morning-info-container">
@@ -123,6 +123,7 @@ import { Interfaces } from "../core/Interfaces";
 import store from "@/store";
 import Nav from "@/layout/Nav.vue";
 import Switches from "vue-switches/src/switches.vue";
+import moment from "moment";
 
 @Component({
   components: {
@@ -133,7 +134,9 @@ import Switches from "vue-switches/src/switches.vue";
 export default class Home extends Vue {
   isMetric: boolean = true;
   tempUnitsLabelText: string = "Temperature unit: C";
-  apiKey: string = "ZlZQsSATNgvtu6FSC2MRjxzeCI1i3Iso";
+  //mBKwvOBoRekqoMlovGTDGkJOb1WRqRmT
+  //ZlZQsSATNgvtu6FSC2MRjxzeCI1i3Iso
+  apiKey: string = "mBKwvOBoRekqoMlovGTDGkJOb1WRqRmT";
   locationSearchText: string = "";
   defaultLocationName: string = "";
   isActive: boolean = false;
@@ -228,7 +231,11 @@ export default class Home extends Vue {
   };
 
   created() {
-    navigator.geolocation.getCurrentPosition(this.success,this.error,this.options);
+    navigator.geolocation.getCurrentPosition(
+      this.success,
+      this.error,
+      this.options
+    );
   }
 
   onGetDefaultLoction(Latitude: string, Longitude: string) {
@@ -292,6 +299,10 @@ export default class Home extends Vue {
         this.watherFiveDays = res;
       })
       .catch(err => {});
+  }
+
+  parseDate(date: string) {
+   return moment(date).format("DD/MM/YYYY");
   }
 
   onChangeMessureUnits() {
