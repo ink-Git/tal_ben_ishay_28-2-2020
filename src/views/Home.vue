@@ -313,7 +313,7 @@ export default class Home extends Vue {
     this.onGetCurrentLocationFiveDaysForecast();
   }
 
-  onValidateAzInput(e) {
+  onValidateAzInput(e:any) {
     let numRegex = new RegExp(/^[a-zA-Z]*$/);
     if (!numRegex.test(e.key)) {
       e.preventDefault();
