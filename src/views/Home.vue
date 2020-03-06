@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div >
     <!--root div-->
     <Nav />
-    <div class="today-container">
+    <div class="today-container" >
       <div :class="currentActiveTheme == 'light' ? 'today-hader-light' : 'today-hader-dark'">
         <div class="favorites-continer">
           <b-button
@@ -113,6 +113,8 @@
       </div>
     </div>
   </div>
+
+
   <!--end root div-->
 </template>
 
@@ -133,9 +135,7 @@ import moment from "moment";
 })
 export default class Home extends Vue {
   isMetric: boolean = true;
-  tempUnitsLabelText: string = "Temperature unit: C";
-  //mBKwvOBoRekqoMlovGTDGkJOb1WRqRmT
-  //ZlZQsSATNgvtu6FSC2MRjxzeCI1i3Iso
+  tempUnitsLabelText: string = "Temperature unit";
   apiKey: string = "mBKwvOBoRekqoMlovGTDGkJOb1WRqRmT";
   locationSearchText: string = "";
   defaultLocationName: string = "";
@@ -246,6 +246,7 @@ export default class Home extends Vue {
       .then(res => {
         this.defaultLocationName = res.LocalizedName;
         this.onGetLocationKey();
+        
       })
       .catch(err => {});
   }
@@ -297,8 +298,11 @@ export default class Home extends Vue {
       )
       .then(res => {
         this.watherFiveDays = res;
+        
       })
-      .catch(err => {});
+      .catch(err => {
+        
+      });
   }
 
   parseDate(date: string) {
@@ -415,7 +419,16 @@ export default class Home extends Vue {
       {
         title: "already have 5 favorites loctions"
       }
-    );
+    );  
+  }
+
+  makeToastCantGet5Dayes(variant = null) {
+    this.$bvToast.toast(
+      `cant added ${this.locationInfo.LocalizedName} to favorites`,
+      {
+        title: "already have 5 favorites loctions"
+      }
+    );  
   }
 }
 

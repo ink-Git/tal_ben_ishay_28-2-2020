@@ -6,14 +6,16 @@
       :variant="currentActiveTheme"
       class="shadow"
     >
-      <b-navbar-brand href="#">NavBar</b-navbar-brand>
+      <b-navbar-brand>
+        <img src="../assets/images/logo.png">
+      </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item to="/">Home</b-nav-item>
-          <b-nav-item to="/Favorites">Favorites</b-nav-item>
+          <b-nav-item class="pt-3" to="/">Home</b-nav-item>
+          <b-nav-item class="pt-3" to="/Favorites">Favorites</b-nav-item>
         </b-navbar-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
@@ -28,10 +30,6 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <div class="weather-img-bg-container">
-      <!-- <img src="../assets/images/banner.jpg"> -->
-    </div>
-
   </div>
 
   
@@ -40,7 +38,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import store from "@/store";
-import Switches from "vue-switches";
+import Switches from "vue-switches/src/switches.vue";
 
 @Component({
   components: {
