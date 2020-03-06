@@ -138,7 +138,7 @@ export default class Home extends Vue {
   tempUnitsLabelText: string = "Temperature unit";
   apiKey: string = "mBKwvOBoRekqoMlovGTDGkJOb1WRqRmT";
   locationSearchText: string = "";
-  defaultLocationName: string = "";
+  defaultLocationName: string = "tel aviv";
   isActive: boolean = false;
   locationSearchResults: Array<any> = new Array<any>();
   displayList: boolean = false;
@@ -357,6 +357,8 @@ export default class Home extends Vue {
 
   error(err: any) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
+    this.onGetLocationKey();
+    
   }
 
   set favoriteWatherCity(value) {
